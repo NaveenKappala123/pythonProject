@@ -4,7 +4,7 @@ from azure.keyvault.secrets import SecretClient
 
 app = Flask(__name__)
 
-KEY_VAULT_URL = "https://keyvalult-for-appservice.vault.azure.net/"
+KEY_VAULT_URL = os.environ["Azure_key_vault"]
 
 
 @app.route("/")
@@ -18,7 +18,6 @@ def home():
 
         username = client.get_secret("username").value
 
-        # Do not display passwords or secret values in a real web page.
         return f"""
         <h1>Azure Key Vault App is Running</h1>
         <p>Username secret was retrieved successfully.</p>
