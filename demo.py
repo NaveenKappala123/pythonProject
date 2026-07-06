@@ -1,15 +1,33 @@
+from flask import Flask
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
 
-vault_url = "Azure_key_vault"
+app = Flask(__name__)
 
-credential = DefaultAzureCredential()
+KEY_VAULT_URL = "https://keyvalult-for-appservice.vault.azure.net/"
 
-client = SecretClient(
-    vault_url=vault_url,
-    credential=credential
-)
 
-secret = client.get_secret("DatabasePassword")
+@app.route("/")
+def home():
+    try:
+        credential = DefaultAzureCredential()
+        client = SecretClient(
+            vault_url=KEY_VAULT_URL,
+            credential=credential
+        )
 
-print(secret.value)
+        username = client.get_secret("username").value
+
+        # Do not display passwords or secret values in a real web page.
+        return f"""
+        <h1>Azure Key Vault App is Running</h1>
+        <p>Username secret was retrieved successfully.</p>
+        <p>Username: {username}</p>
+        """
+
+    except Exception as error:
+        return f"<h2>Error</h2><pre>{error}</pre>", 500
+
+
+if __name__ == "__main__":
+    app.run()
