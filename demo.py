@@ -1,8 +1,7 @@
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
 
-key_vault_name = "my-key-vault"
-vault_url = f"https://{key_vault_name}.vault.azure.net/"
+vault_url = "Azure_key_vault"
 
 credential = DefaultAzureCredential()
 
